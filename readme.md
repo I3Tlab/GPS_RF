@@ -53,8 +53,15 @@ python 1D_adiabatic_demo.py
 ```
 
 #### SPSP RF pulse (Figure 4 in the paper)
+
+Fat suppression (Figure 4a in the paper)
 ```bash
-python 1D_SPSP_demo.py
+python 1D_SPSP_demo.py --data_path data_loader/SPSP_TBW_3_SBW_6_pw_23p8ms_exc_width_5mm_water_192x96_conj.mat --notes water
+```
+
+Fat saturation (Figure 4b in the paper)
+```bash
+python 1D_SPSP_demo.py --data_path data_loader/SPSP_TBW_3_SBW_6_pw_23p8ms_exc_width_5mm_fat_192x96_conj.mat --notes fat
 ```
 
 #### 2D RF pulse (Figure 5 in the paper)
@@ -66,12 +73,12 @@ python 2D_AI_demo.py
 Online adaptation indicates field inhomogeneity compensation by adjusting the RF pulse.
 #### online adaptation for phantom scan (Figure 7 in the paper)
 ```bash
-python 2D_online_adaptation_demo.py --B0 data_loader/measured_B0_20240407_3_phantom.mat --B1 data_loader/measured_B1_20240407_phantom.mat
+python 2D_online_adaptation_demo.py --B0 data_loader/measured_B0_20240407_3_phantom.mat --B1 data_loader/measured_B1_20240407_phantom.mat --notes phantom
 ```
 
 #### online adaptation for phantom invivo brain scan (Figure 8 in the paper)
 ```bash
-python 2D_online_adaptation_demo.py --B0 data_loader/measured_B0_20240415_2_brain.mat --B1 data_loader/measured_B1_20240415_brain.mat
+python 2D_online_adaptation_demo.py --B0 data_loader/measured_B0_20240415_2_brain.mat --B1 data_loader/measured_B1_20240415_brain.mat --notes invivo_brain
 ```
 
 ### Publication
