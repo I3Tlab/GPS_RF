@@ -1,7 +1,6 @@
 # Physics-Guided Self-Supervised Learning: Demonstration for Generalized RF Pulse Design
 
 - [Introduction](#introduction)
-- [News](#news)
 - [Getting Started](#getting-started)
   * [Installation](#Installation)
   * [Offline Training](#offline-training)
@@ -14,7 +13,7 @@
 Generalized RF pulse design using Physics-guided Self-supervised learning (GPS) is a versitality and felixible framework to design variety of RF pulses, including 1D selective pulse, B1-insensitive pulse, SPatial-SPectral (SPSP) pulse and 2D pulse. GPS can furhter compensite the field inhomogeneity through online adaptation.
 For more details, see our paper at [Magnetic Resonance in Medicine](https://onlinelibrary.wiley.com/doi/full/10.1002/mrm.30307).
 
-![figure1.svg](writting%2Ffigure1.svg)
+![figure1.svg](resources%2Ffigure1.svg)
 
 
 ## Getting Started
