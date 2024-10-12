@@ -1,7 +1,6 @@
 # Physics-Guided Self-Supervised Learning: Demonstration for Generalized RF Pulse Design
 
 - [Introduction](#introduction)
-- [News](#news)
 - [Getting Started](#getting-started)
   * [Installation](#Installation)
   * [Offline Training](#offline-training)
