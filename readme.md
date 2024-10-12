@@ -11,7 +11,7 @@
 <!-- - [Star History](#star-history)-->
 
 ## Introduction
-Generalized RF pulse design using Physics-guided Self-supervised learning (GPS) is a versitality and felixible framework to design variety of RF pulses, including 1D selective pulse, B1-insensitive pulse, SPatial-SPectral (SPSP) pulse and 2D pulse. GPS can furhter compensite the field inhomogeneity through online adaptation.
+Generalized RF pulse design using Physics-guided Self-supervised learning (GPS) is a versatility and flexible framework to design various RF pulses, including 1D selective pulse, B1-insensitive pulse, SPatial-SPectral (SPSP) pulse, and 2D pulse. GPS can further compensate the field inhomogeneity through online adaptation.
 For more details, see our paper at [Magnetic Resonance in Medicine](https://onlinelibrary.wiley.com/doi/full/10.1002/mrm.30307).
 
 ![figure1.svg](resources%2Ffigure1.svg)
@@ -23,10 +23,14 @@ The computing environment we tested.
 - GPU: NVIDIA A100
 
 ### Installation
-0. Download and Install appropriate version of NVIDIA driver and CUDA for your GPU.
+0. Download and Install the appropriate version of NVIDIA driver and CUDA for your GPU.
 1. Download and install [Anaconda](https://www.anaconda.com/download) or [Miniconda](https://docs.anaconda.com/miniconda/).
-2. Clone this repo.
-3. Creat and activate Conda environment:
+2. Clone this repo and cd to the project path.
+```bash
+git clone git@git@github.com:lphxx6222712/GPS_RF.git
+cd GPS_RF
+```
+3. Create and activate the Conda environment:
 ```bash
 conda create --name GPSRF python=3.10.12
 conda activate GPSRF
@@ -37,7 +41,7 @@ pip install -r requirements.txt
 ```
 
 ### Offline training
-Offline training indicates RF pulse design with homogenous field.
+Offline training indicates RF pulse design with homogenous fields.
 
 #### 1D selective RF pulse (Figure 2a in the paper)
 ```bash
@@ -60,7 +64,7 @@ python 2D_AI_demo.py
 ```
 
 ### Online adaptation
-Online adaptation indicates field inhomogeneity compensation by adjusting RF pulse.
+Online adaptation indicates field inhomogeneity compensation by adjusting the RF pulse.
 #### online adaptation for phantom scan (Figure 7 in the paper)
 ```bash
 python 2D_online_adaptation_demo.py --B0 data_loader/measured_B0_20240407_3_phantom.mat --B1 data_loader/measured_B1_20240407_phantom.mat
