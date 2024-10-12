@@ -38,34 +38,34 @@ pip install -r requirements.txt
 ### Offline training
 Offline training indicates RF pulse design with homogenous field.
 
-#### 1D selective RF pulse (Figure 2a in the paper)
+#### 1D selective RF pulse (refers to Figure 2a in the paper)
 ```bash
 python 1D_pulse_demo.py
 ```
 
-#### 1D B1-insensitive RF pulse (Figure 2b in the paper)
+#### 1D B1-insensitive RF pulse (refers to Figure 2b in the paper)
 ```bash
 python 1D_adiabatic_demo.py
 ```
 
-#### SPSP RF pulse (Figure 4 in the paper)
+#### SPSP RF pulse (refers to Figure 4 in the paper)
 ```bash
 python 1D_SPSP_demo.py
 ```
 
-#### 2D RF pulse (Figure 5 in the paper)
+#### 2D RF pulse (refers to Figure 5 in the paper)
 ```bash
 python 2D_demo.py
 ```
 
 ### Online adaptation
 Online adaptation indicates field inhomogeneity compensation by adjusting RF pulse.
-#### online adaptation for phantom scan (Figure 7 in the paper)
+#### online adaptation for phantom scan (refers to Figure 7 in the paper)
 ```bash
 python 2D_online_adaptation_demo.py --B0 data_loader/measured_B0_20240407_3_phantom.mat --B1 data_loader/measured_B1_20240407_phantom.mat
 ```
 
-#### online adaptation for phantom invivo brain scan (Figure 8 in the paper)
+#### online adaptation for phantom invivo brain scan (refers to Figure 8 in the paper)
 ```bash
 python 2D_online_adaptation_demo.py --B0 data_loader/measured_B0_20240415_2_brain.mat --B1 data_loader/measured_B1_20240415_brain.mat
 ```
