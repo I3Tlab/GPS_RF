@@ -27,7 +27,7 @@ The computing environment we tested.
 1. Download and install [Anaconda](https://www.anaconda.com/download) or [Miniconda](https://docs.anaconda.com/miniconda/).
 2. Clone this repo and cd to the project path.
 ```bash
-git clone git@git@github.com:lphxx6222712/GPS_RF.git
+git clone git@github.com:lphxx6222712/GPS_RF.git
 cd GPS_RF
 ```
 3. Create and activate the Conda environment:
