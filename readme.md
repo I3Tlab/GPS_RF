@@ -6,7 +6,7 @@
   * [Offline Training](#offline-training)
   * [Online Adaptation](#online-adaptaion)
 - [Publication](#publication)
-- [Project main members](#project-main-members-)
+- [Contacts](#contacts)
 <!-- - [Star History](#star-history)-->
 
 ## Introduction
@@ -68,7 +68,7 @@ python 1D_SPSP_demo.py --data_path data_loader/SPSP_TBW_3_SBW_6_pw_23p8ms_exc_wi
 python 2D_AI_demo.py
 ```
 
-### Online adaptation
+### Online Adaptation
 Online adaptation indicates field inhomogeneity compensation by adjusting the RF pulse.
 #### online adaptation for phantom scan (Figure 7 in the paper)
 ```bash
