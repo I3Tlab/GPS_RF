@@ -4,7 +4,7 @@
 - [Getting Started](#getting-started)
   * [Installation](#Installation)
   * [Offline Training](#offline-training)
-  * [Online Adaptation](#online-adaptaion)
+  * [Online Adaptation](#online-adaptation)
 - [Publication](#publication)
 - [Contacts](#contacts)
 <!-- - [Star History](#star-history)-->
