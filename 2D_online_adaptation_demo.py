@@ -55,30 +55,16 @@ def train_single_epoch(args,
     if args.B_0_path is not None:
         B_0 = scipy.io.loadmat(args.B_0_path)
         B_0 = B_0['B0'][:,:,args.slice - 1]
-        #B_0 = cv2.resize(B_0, (args.nvox, args.nvox), interpolation=cv2.INTER_NEAREST)
-        B_0 = torch.tensor(B_0).unsqueeze(0).to(device)#.permute([2,0,1]).to(device)
+        B_0 = cv2.resize(B_0, (args.nvox, args.nvox), interpolation=cv2.INTER_NEAREST)
+        B_0 = torch.tensor(B_0).unsqueeze(0).to(device)
     if args.B_1_path is not None:
         B_1 = scipy.io.loadmat(args.B_1_path)
         B_1 = B_1['B1'][:,:,args.slice - 1]
-        #B_1 = cv2.resize(B_1, (args.nvox, args.nvox), interpolation=cv2.INTER_NEAREST)
-        B_1 = torch.tensor(B_1).unsqueeze(0).to(device)#.permute([2,0,1]).to(device)
-        #B_1 = torch.where(B_1==0, 1, B_1)
+        B_1 = cv2.resize(B_1, (args.nvox, args.nvox), interpolation=cv2.INTER_NEAREST)
+        B_1 = torch.tensor(B_1).unsqueeze(0).to(device)
 
     bloch = Gxyt2fBlochsim_fast_B0_jit(duration=duration, nvox=int(args.nvox), nvoy=int(args.nvox), dt=dt, t2=[0], FOV=args.FOV)
-
-    'test_log/2DPulse_training_lr0.001_b1max700_FA15_202403280940_computer_grad_switched_xy_flip_x_jit_AI/3__133_0.00011015747440978885.mat'
-    'test_log/2DPulse_training_lr0.001_b1max700_FA15_202403280940_computer_grad_switched_xy_flip_x_jit_AI/3__133_0.00011015747440978885.mat'
     excitation = scipy.io.loadmat(f'{args.converter_ckp}/3__133_0.00011015747440978885.mat')
-    # 3__133_0.00011015747440978885.mat for AI
-    #0__391_1.1234326848352794e-05.mat for 4 pixel disc
-
-    #22__22_7.981051749084145e-05.mat for perfect disc
-
-    #excitation = excitation['Predict_profile']
-    #excitation = excitation['Target_profile']
-    # excitation_x = torch.tensor(excitation[:,:,0]).to(torch.float32).unsqueeze(-1)
-    # excitation_y = torch.tensor(excitation[:,:,1]).to(torch.float32).unsqueeze(-1)
-    # excitation_z = torch.tensor(excitation[:,:,2]).to(torch.float32).unsqueeze(-1)
 
     excitation = cv2.imread(args.profile_path, 0)
     excitation = cv2.resize(excitation, (args.nvox, args.nvox), interpolation=cv2.INTER_NEAREST)
@@ -89,7 +75,6 @@ def train_single_epoch(args,
     excitation_x = torch.zeros_like(excitation_y)
     excitation_z = torch.sqrt(1 - excitation_x ** 2 - excitation_y ** 2)
     excitation = torch.cat([excitation_x, excitation_y, excitation_z], dim=-1).to(device).unsqueeze(0)
-
 
     imaging_flag = 0
     switch_sing = 0
@@ -106,36 +91,15 @@ def train_single_epoch(args,
 
         with (autocast(enabled=False)):
             input_real = spatial_time_convertor_real(
-                excitation.reshape([1, -1])) # +torch.randn(excitation.size()).to(device))
+                excitation.reshape([1, -1]))
             input_imag = spatial_time_convertor_imag(
-                excitation.reshape([1, -1]))  # +torch.randn(excitation.size()).to(device))
-            #
-            # magnitude = torch.sqrt(input_real.detach() ** 2 + input_imag.detach() ** 2)
-            # b1_max = torch.max(magnitude)
-            # new_b1_max = b1_max * 1/1.5228
-            # input_real = (input_real / b1_max) * new_b1_max
-            # input_imag = (input_imag / b1_max) * new_b1_max
-
-            #b1max_pred = torch.max(torch.absolute(input_real.detach() + 1j * input_imag.detach()))
-            #
-            # input_real = input_real / b1max_pred
-            # input_real = input_real * b1maxs
-            # input_imag = input_imag / b1max_pred
-            # input_imag = input_imag * b1maxs
+                excitation.reshape([1, -1]))
             rf_t = torch.cat([(input_real).unsqueeze(-1), (input_imag).unsqueeze(-1)], dim=-1)
             rf_t = rf_t[:, :duration, :]
 
             Predict_Profile = bloch(rf_t[:, :, 0], rf_t[:, :, 1], designed_Gx.detach(), designed_Gy.detach(),
                                     B_0.detach(), B_1.detach())
-
-            #loss = F.mse_loss(torch.abs(Predict_Profile[:, :, :, 0] + 1j * Predict_Profile[:, :, :, 1]),
-             #                  torch.abs(excitation[:, :, :, 0] + 1j * excitation[:, :, :, 1]).detach())
-
             loss = F.mse_loss(Predict_Profile, excitation.detach())
-
-            #loss = torch.abs(Predict_Profile-excitation.detach()).mean()
-            #loss = loss + 95*loss.detach().item()*(torch.abs(Predict_Profile[:, :, :, 0] + 1j * Predict_Profile[:, :, :, 1])*background_mask).mean()
-
             scaler.scale(loss).backward()
 
             scaler.step(optimizer_real)
@@ -188,10 +152,8 @@ def train_single_epoch(args,
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='2D RF Pulse Design Online Adaptation')
     parser.add_argument('--converter_ckp', default='test_log/2DPulse_training_lr0.001_b1max700_FA15_202403280940_computer_grad_switched_xy_flip_x_jit_AI', help='checkpoint directory')
-    #2DPulse_training_lr0.001_b1max700_FA15_202403280940_computer_grad_switched_xy_flip_x_jit_AI
-    #2DPulse_training_lr0.001_b1max500_FA15_202404061733_computer_grad_switched_xy_flip_x_jit_circle_4pixel
     parser.add_argument('--phase', type=str, default='test')
-    parser.add_argument('--lr', type=float, default=1e-2) #1e-3 best for finetune. #1e-2 best for LoRA
+    parser.add_argument('--lr', type=float, default=1e-2)
     parser.add_argument('--max_epochs', type=int, default=2)
     parser.add_argument('--nvox', type=int, default=64)
     parser.add_argument('--f_sampling', type=float, default=3.5)
@@ -202,11 +164,9 @@ if __name__ == "__main__":
     parser.add_argument('--FA', type=int, default=15)
     parser.add_argument('--slice', type=int, default=16)
     parser.add_argument('--gradient_path', type=str, default='data_loader/2D_profile_gradient_with_k_gm2d100_sm25_resampled_1.2315.mat')
-    #2D_profile_gradient_with_k_gm2d100_sm25_resampled_1.2315.mat
-    #measured_grad_20240305_non_chopped_1p228_corrected.mat
-    parser.add_argument('--notes', type=str, default='') #disc_mxyz_4pixel #AI_mxyz_reduced_b1max_1p5228
+    parser.add_argument('--notes', type=str, default=''
     parser.add_argument('--FOV', type=int, default=16, help='unit in cm')
-    parser.add_argument('--profile_path', type=str, default='AI64_con.png') #circle_phantom1.5x.png #circle_phantom2_2pixel #AI64_con #circle_phantom2_4pixel.png
+    parser.add_argument('--profile_path', type=str, default='AI64_con.png')
     parser.add_argument('--B_0_path', type=str, default='data_loader/measured_B0_20240415_2_brain.mat')
     parser.add_argument('--B_1_path', type=str, default='data_loader/measured_B1_20240415_brain.mat')
     parser.add_argument('--Adaptation_method', type=str, default='LoRA', help='finetune or LoRA')
@@ -223,7 +183,7 @@ if __name__ == "__main__":
             args.f_sampling = training_args.f_sampling
             args.nvox = training_args.nvox
             args.b1_max = training_args.b1_max
-            #args.FA = training_args.FA
+            args.FA = training_args.FA
             print(args)
 
     args.taskname = f'online_learning_B0_B1_adaptation_lr{args.lr}_b1max{args.b1_max}_FA{args.FA}_{datetime.now().strftime("%Y%m%d%H%M")}_{args.notes}_slice{args.slice}_{args.Adaptation_method}'
@@ -244,7 +204,7 @@ if __name__ == "__main__":
     accelerator = Accelerator()
     device = accelerator.device
 
-    spatial_time_convertor_real = spatial_time_convertor_real(args.nvox * args.nvox * 3, 2048) #3586
+    spatial_time_convertor_real = spatial_time_convertor_real(args.nvox * args.nvox * 3, 2048)
     spatial_time_convertor_imag = spatial_time_convertor_imag(args.nvox * args.nvox * 3, 2048)
 
     if args.converter_ckp is not None:
