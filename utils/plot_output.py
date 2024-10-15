@@ -44,46 +44,15 @@ def plot_output_2d(designed_rf,designed_Gx, designed_Gy, name, Predict_Profile, 
     plt.legend()
 
     Predict_Profile_x = Predict_Profile[:, :, :, 0].squeeze()
-    #Predict_Profile_x = (Predict_Profile_x-Predict_Profile_x.min())/(Predict_Profile_x.max()-Predict_Profile_x.min())
     Predict_Profile_y = Predict_Profile[:, :, :, 1].squeeze()
-    #Predict_Profile_y = (Predict_Profile_y-Predict_Profile_y.min())/(Predict_Profile_y.max()-Predict_Profile_y.min())
     Predict_Profile_z = Predict_Profile[:, :, :, 2].squeeze()
-    #Predict_Profile_z = (Predict_Profile_z-Predict_Profile_z.min())/(Predict_Profile_z.max()-Predict_Profile_z.min())
 
     excitation_x = excitation[:, :, :, 0].squeeze()
-    #excitation_x = (excitation_x-excitation_x.min())/(excitation_x.max()-excitation_x.min())
     excitation_y = excitation[:, :, :, 1].squeeze()
-    #excitation_y = (excitation_y-excitation_y.min())/(excitation_y.max()-excitation_y.min())
     excitation_z = excitation[:, :, :, 2].squeeze()
-    #excitation_z = (excitation_z-excitation_z.min())/(excitation_z.max()-excitation_z.min())
 
     height_cm = 15
     width_cm = 15
-
-    # plt.subplot(5, 3, 7)
-    #
-    #
-    #
-    #
-    # plt.imshow(Predict_Profile_x - excitation_x, cmap='seismic', interpolation='nearest', vmin=-2, vmax=2)#, extent=[0, width_cm, 0, height_cm])
-    # plt.title('Difference X')
-    # plt.xlabel('cm')
-    # plt.ylabel('cm')
-    # plt.colorbar()
-    #
-    # plt.subplot(5, 3, 8)
-    # plt.imshow(Predict_Profile_y - excitation_y, cmap='seismic', interpolation='nearest', vmin=-2, vmax=2)#, extent=[0, width_cm, 0, height_cm])
-    # plt.title('Difference Y')
-    # plt.xlabel('cm')
-    # plt.ylabel('cm')
-    # plt.colorbar()
-    #
-    # plt.subplot(5, 3, 9)
-    # plt.imshow(Predict_Profile_z - excitation_z, cmap='seismic', interpolation='nearest', vmin=-2, vmax=2)#, extent=[0, width_cm, 0, height_cm])
-    # plt.title('Difference Z')
-    # plt.xlabel('cm')
-    # plt.ylabel('cm')
-    # plt.colorbar()
 
     plt.subplot(3, 2, 5)
     plt.imshow(torch.sqrt(Predict_Profile_x**2+Predict_Profile_y**2)/torch.max(torch.sqrt(Predict_Profile_x**2+Predict_Profile_y**2)), cmap='gray', interpolation='nearest', vmin=0, vmax=1)#, extent=[0, width_cm, 0, height_cm])
@@ -98,41 +67,8 @@ def plot_output_2d(designed_rf,designed_Gx, designed_Gy, name, Predict_Profile, 
     plt.xlabel('cm')
     plt.ylabel('cm')
     plt.colorbar()
-
-    # plt.subplot(3, 3, 12)
-    # plt.imshow(Predict_Profile_z, cmap='seismic', interpolation='nearest', vmin=-1, vmax=1)#, extent=[0, width_cm, 0, height_cm])
-    # plt.title('PredExcitation Z')
-    # plt.xlabel('cm')
-    # plt.ylabel('cm')
-    # plt.colorbar()
-    # plt.legend()
-    #
-    # plt.subplot(3, 3, 13)
-    # plt.imshow(excitation_x, cmap='seismic', interpolation='nearest', vmin=-1, vmax=1)#, extent=[0, width_cm, 0, height_cm])
-    # plt.title('Excitation X')
-    # plt.xlabel('cm')
-    # plt.ylabel('cm')
-    # plt.colorbar()
-    #
-    # plt.subplot(3, 3, 14)
-    # plt.imshow(excitation_y, cmap='seismic', interpolation='nearest', vmin=-1, vmax=1)#, extent=[0, width_cm, 0, height_cm])
-    # plt.title('Excitation Y')
-    # plt.xlabel('cm')
-    # plt.ylabel('cm')
-    # plt.colorbar()
-    #
-    # plt.subplot(3, 3, 15)
-    # plt.imshow(excitation_z, cmap='seismic', interpolation='nearest', vmin=-1, vmax=1)#, extent=[0, width_cm, 0, height_cm])
-    # plt.title('Excitation Z')
-    # plt.xlabel('cm')
-    # plt.ylabel('cm')
-    # plt.colorbar()
-    # plt.legend()
-
+    
     plt.tight_layout()
-
-    #fig_save_path = f'{log_path}/{epoch}_{name}_{step}_{F.cosine_similarity(Predict_Profile.reshape([Predict_Profile.size(0), 3, -1]), excitation.reshape([Predict_Profile.size(0), 3, -1]), dim=1).mean().detach().item()}.png'
-
 
     fig_save_path = f'{log_path}/{epoch}_{name}_{step}_{F.mse_loss(Predict_Profile, excitation).mean().detach().item()}.png'
 
