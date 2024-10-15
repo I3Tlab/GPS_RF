@@ -161,10 +161,10 @@ def train_single_epoch(args,
             best_loss = loss.detach().item()
             torch.save(spatial_time_convertor_real.state_dict(),
                        os.path.join('test_log', args.taskname,
-                                    f'convertor_epoch_real.pth'))  # + '_batch_%d.pth' %batch_idx))
+                                    f'convertor_epoch_real.pth'))
             torch.save(spatial_time_convertor_imag.state_dict(),
                        os.path.join('test_log', args.taskname,
-                                    f'convertor_epoch_imag.pth'))  # + '_batch_%d.pth' %batch_idx))
+                                    f'convertor_epoch_imag.pth'))
             if cos_sim == 1:
                 return 1
         else:
